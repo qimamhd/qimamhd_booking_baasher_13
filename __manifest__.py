@@ -17,8 +17,7 @@
         'reports/booking_payment_report.xml',
         'reports/booking_extend_report.xml',
        
-        'reports/delivery_report.xml',
-        
+         
  
     ],
     'demo': [

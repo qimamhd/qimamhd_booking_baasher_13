@@ -389,14 +389,5 @@ right:0px;
 				</t>
 	</template>
 
-
-	<report id="print_booking_extend_report"
-				model="hotel.service.extend"
-				string=" طباعة ملحق عقد الحجز"
-				report_type="qweb-pdf"
-				name="qimamhd_booking_13.booking_extend_report_view"
-				file="qimamhd_booking_13.booking_extend_report_view"
-				menu="True"
-
-				/>
+ 
 </odoo>

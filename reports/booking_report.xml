@@ -576,15 +576,5 @@
 				</t>
 				</t>
 </template>
-
-
-<report id="print_booking_order_report"
-				model="hotel.master"
-				string=" طباعة عقد الحجز"
-				report_type="qweb-pdf"
-				name="qimamhd_booking_13.booking_order_report_view"
-				file="qimamhd_booking_13.booking_order_report_view"
-				menu="True"
-
-				/>
+ 
 </odoo>
