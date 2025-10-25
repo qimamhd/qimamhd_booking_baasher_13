@@ -8,7 +8,7 @@
     'maintainer': 'qimamhd-tech Techno Solutions',
     'company': 'qimamhd-tech Techno Solutions',
     'website': 'https://www.qimamhd-tech.com',
-    'depends': ['base','custom_branch_13', 'calendar'],
+    'depends': ['base','custom_branch_13', 'calendar','qimamhd_booking_13'],
     'data': [
         # 'security/ir.model.access.csv',
         # 'security/security.xml',
