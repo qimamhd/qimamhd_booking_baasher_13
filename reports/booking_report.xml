@@ -139,7 +139,7 @@
                                      </t>
                          <t t-if="docs.state not in ['cancel_booking'] and docs.state not in ['initial_booking']">
 						    
-								<center><strong> عقد الحجز</strong>
+								<center><strong> عقد---  الحجز</strong>
                                     <br/>
                                     <strong> رقم العقد </strong> (  <span t-esc="docs.seq"/>  )
                                     <!-- <t t-if="docs.state == 'initial_booking'">
