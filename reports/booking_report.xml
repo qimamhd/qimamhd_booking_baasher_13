@@ -1,53 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 <template id="booking_order_baasher_report_view"  inherit_id="qimamhd_booking_13.booking_order_report_view">  
-		    <t t-if="o and 'company_id' in o">
-                <t t-set="company" t-value="o.company_id"/>
-            </t>
-            <t t-if="not o or not 'company_id' in o">
-                <t t-set="company" t-value="res_company"/>
-            </t>
-            
-			<div class="header">
-                <div class="row mt32 mb32">
-                    <div class="col-6">
-						<t t-if="not user_id.branch_id.no_header_report_account">
-							<t t-if="user_id.branch_id.branch_header">
-								<img t-if="user_id.branch_id" t-att-src="'data:image/png;base64,%s' % to_text(user_id.branch_id.branch_header)" style="max-height: 200px;"/>
-							</t>
-							<t t-else="">
-								<t t-if="company.header_image">
-									<img t-if="company.header_image" t-att-src="'data:image/png;base64,%s' % to_text(company.header_image)" style="max-height: 200px;"/>
-								</t>
-						    </t>
-						</t>
-                    </div>
-                </div>
-            </div>
-            <div class="footer">
-                <div class="row mt32 mb32">
-                    <div class="col-12">
-						<t t-if="not user_id.branch_id.no_header_report_account">
-							<t t-if="user_id.branch_id.branch_footer">
- 								<img t-if="user_id.branch_id" t-att-src="'data:image/png;base64,%s' % to_text(user_id.branch_id.branch_footer)" style="max-height: 200px;"/> 
-									<!--<img src="/sale/static/img/lumar_cond.png" style="max-height:200px;"/>-->
-									<br/>
-							</t>
-							<t t-else="">
-								<t t-if="company.footer_image">
-									<img t-if="company.footer_image" t-att-src="'data:image/png;base64,%s' % to_text(company.footer_image)" style="max-height: 200px;"/> 
-										<!--<img src="/sale/static/img/lumar_cond.png" style="max-height:200px;"/>-->
-										<br/>
-								</t>
-							</t>
-						</t>
-                    </div>
-                </div>
-            </div>
-            
-			<t t-call="web.html_container">
-			    
-				<t t-call="web.external_layout">
+    <xpath expr="//t[@t-call='web.html_container']" position="replace">
+        <t t-call="web.external_layout">
 				
         <style>
                 table {
@@ -574,7 +529,7 @@
 					</div>
 					</t>
 				</t>
-				</t>
+    </xpath>
 </template>
  
 </odoo>
