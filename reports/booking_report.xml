@@ -531,8 +531,9 @@
 					</div>
 					</t>
 				</t>
-         	</xpath>
+         	
         </t>
+        </xpath>
     </template>
  
 </odoo>
