@@ -16,6 +16,7 @@
         'reports/booking_report.xml',
         'reports/booking_payment_report.xml',
         'reports/booking_extend_report.xml',
+        'views/booking.xml',
        
          
  
