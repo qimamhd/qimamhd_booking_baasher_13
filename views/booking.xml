@@ -8,6 +8,9 @@
             <xpath expr="//field[@name='id']" position="attributes">
                    <attribute name="invisible">1</attribute>
             </xpath>
+              <xpath expr="//field[@name='seq']" position="attributes">
+                   <attribute name="string">رقم العقد</attribute>
+            </xpath>
 		</field>
 	</record>
 
