@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+      <record model="ir.ui.view" id="delivery_report_view">
+        <field name="name">booking.delivery.view</field>
+        <field name="model">booking.delivery.report.view</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="custom Report">
+                    <group>
+                        <field name="customer_id" string="العميل" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}" readonly="1" />
+                        <field name="date_order" string="التاريخ"   options="{'no_create': True}"/>
+                        <field name="booking_no" string="رقم العقد" readonly="1" options="{'no_create': True}"/>
+
+                         <field name="company_ids1" invisible="1"  />
+
+                    </group>
+                  <notebook>
+                      <page string="الاصناف">
+                          <field name="lines" create="0" >
+                                <tree editable="bottom" create="0" string="الاصناف" >
+                                        <!-- Displayed fields -->
+                                 <field name="product" string="الصنف"  options="{'no_create': True}"/>
+                                     <field name="qty" string="الكمية" />
+
+                                    <field name="header_id" invisible="1"/>
+
+
+                                </tree>
+                          </field>
+                      </page>
+                  </notebook>
+
+                <footer>
+                    <button name="get_report" string="Print Report" type="object" class="oe_highlight"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+
+    </record>
+
+     <act_window id="action_booking_delivery_report"
+                name=" امر الاستلام"
+                res_model="booking.delivery.report.view"
+                view_mode="form"
+                target="new"/>
+
+
+</odoo>

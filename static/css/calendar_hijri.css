@@ -1,0 +1,18 @@
+/* إخفاء عمود أرقام الأسابيع بالكامل */
+.fc-week-number,
+.fc-axis.fc-week-number,
+th.fc-week-number,
+td.fc-week-number,
+.fc-week-number span,
+.fc-axis.fc-week-number {
+    display: none !important;
+    width: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* تعديل عرض الجدول بعد الإخفاء */
+.fc-row .fc-bg table,
+.fc-row table {
+    margin-left: 0 !important;
+}

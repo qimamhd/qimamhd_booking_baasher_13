@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+<template id="booking_order_report_view">
+		    <t t-if="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id"/>
+            </t>
+            <t t-if="not o or not 'company_id' in o">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+            
+			<div class="header">
+                <div class="row mt32 mb32">
+                    <div class="col-6">
+						<t t-if="not user_id.branch_id.no_header_report_account">
+							<t t-if="user_id.branch_id.branch_header">
+								<img t-if="user_id.branch_id" t-att-src="'data:image/png;base64,%s' % to_text(user_id.branch_id.branch_header)" style="max-height: 200px;"/>
+							</t>
+							<t t-else="">
+								<t t-if="company.header_image">
+									<img t-if="company.header_image" t-att-src="'data:image/png;base64,%s' % to_text(company.header_image)" style="max-height: 200px;"/>
+								</t>
+						    </t>
+						</t>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                <div class="row mt32 mb32">
+                    <div class="col-12">
+						<t t-if="not user_id.branch_id.no_header_report_account">
+							<t t-if="user_id.branch_id.branch_footer">
+ 								<img t-if="user_id.branch_id" t-att-src="'data:image/png;base64,%s' % to_text(user_id.branch_id.branch_footer)" style="max-height: 200px;"/> 
+									<!--<img src="/sale/static/img/lumar_cond.png" style="max-height:200px;"/>-->
+									<br/>
+							</t>
+							<t t-else="">
+								<t t-if="company.footer_image">
+									<img t-if="company.footer_image" t-att-src="'data:image/png;base64,%s' % to_text(company.footer_image)" style="max-height: 200px;"/> 
+										<!--<img src="/sale/static/img/lumar_cond.png" style="max-height:200px;"/>-->
+										<br/>
+								</t>
+							</t>
+						</t>
+                    </div>
+                </div>
+            </div>
+            
+			<t t-call="web.html_container">
+			    
+				<t t-call="web.external_layout">
+				
+        <style>
+                table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size:9px;
+                }
+                #t01 th, td {
+                text-align: right;
+                padding: 3px;
+                font-size:9px;
+                vertical-align: middle;
+                }
+        </style>
+        <style>
+        #customers {
+        border-collapse: collapse;
+        width: 100%;
+        border: 1px solid DarkOrange;
+        
+        overflow:hidden
+        }
+
+        #supplier {
+        border-collapse: collapse;
+        width: 100%;
+        border: 1px solid DarkOrange;
+        
+        overflow:hidden
+        }
+
+        #customers td, #customers th {
+        border: 1px solid gray;
+        padding: 5px;
+        text-align: right;
+        }
+
+        #supplier td, #supplier th {
+        border: 1px solid #D3D3D3;
+        padding: 8px;
+        text-align: right;
+        vertical-align: top;
+        }
+
+        #customers tr:nth-child(even){background-color: #F5F5F5;}
+
+        #customers tr:hover {background-color: #ddd;}
+
+        #customers th {
+        padding-top: 5px;
+        padding-bottom: 5px;
+        text-align: right;
+        
+        
+        }
+
+        #supplier th {
+        padding-top: 5px;
+        padding-bottom: 5px;
+        text-align: right;
+        
+        }
+        </style>
+        <style>
+        #table1 {
+        border-collapse: collapse;
+        width: 100%;
+        font-size:9px;
+        }
+
+        #table1 th, #table1 td {
+        padding: 8px;
+        text-align: right;
+        font-size:9px;
+        }
+        </style>
+        <style>
+        #foo {
+        position:absolute;
+        bottom:300px;
+        right:0px;
+        }
+        </style>
+
+					<t t-foreach="docs" t-as="doc">
+						<div class="page">
+                        		       <t t-if="docs.state == 'cancel_booking' or docs.state == 'initial_booking'">
+                               <center>         <h3>  [ مسودة ]  </h3> </center>
+                                     </t>
+                         <t t-if="docs.state not in ['cancel_booking'] and docs.state not in ['initial_booking']">
+						    
+								<center><strong> عقد الحجز</strong>
+                                    <br/>
+                                    <strong> رقم العقد </strong> (  <span t-esc="docs.id"/>  )
+                                    <!-- <t t-if="docs.state == 'initial_booking'">
+                                        حجز مبدئ
+                                   </t>
+                                   <t t-else="">
+                                   <t t-if="docs.state == 'booking_done'">
+                                        تم الحجز
+                                   </t>
+                                   <t t-else="">
+                                   <t t-if="docs.state == 'finish_booking'">
+                                        انتهاء الحجز
+                                   </t>
+                                   <t t-else="">
+                                   <t t-if="docs.state == 'cancel_booking'">
+                                       حجز ملغي
+                                   </t>
+                                    
+                                   </t>
+                                   </t>
+                                   </t> -->
+                                </center>
+                                 
+								تم ابرام هذا العقد  بين :
+                               
+                                <table style="font-size:11px;">
+                                    <tr>
+                                        <td style="vertical-align:top;font-size:11px; border-collapse: collapse;">
+                                            <table id="table1" style="background-color:white;">
+                                            <tr style="background-color:white;">
+                                            
+                                                <td style="vertical-align:top;font-size:11px; border-collapse: collapse;">
+                                                    <strong>الطرف الاول </strong>
+                                                </td>
+                                                <td>
+                                                    <!-- <span t-esc="docs.company_id.name"/> -->
+                                                     <span t-esc="docs.branch_id.name"/>
+                                                </td>
+                                                <td>
+                                                    <strong> عنوان الشركة </strong>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="docs.company_id.street"/>  
+                                                    
+                                                </td>
+                                                
+                                               
+                                            </tr>
+                                            <tr style="background-color:white;">
+                                                <td>
+                                                <strong> رقم هاتف الشركة </strong> 
+                                                </td>
+                                                 
+                                                <td>
+                                                    <span t-esc="docs.company_id.partner_id.phone"/>  
+                                                </td>
+                                                
+                                                <td>
+                                                <strong> الجوال </strong>
+                                                </td>
+                                                
+                                                <td>
+                                                    <span t-esc="docs.company_id.partner_id.mobile"/>
+                                                </td>
+                                                 
+                                               
+                                            </tr>
+                                            <tr style="background-color:white;">
+                                                <td>
+                                                    <strong>الطرف الثاني</strong>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="docs.partner_id.name"/>                                 
+                                               </td>
+                                                <td>
+                                                   <strong> عنوان العميل </strong>
+                                                </td>
+                                                <td>
+                                                   <span t-esc="docs.partner_id.street"/>
+                                                </td>
+                                                
+                                               
+                                            </tr>
+                                            <tr style="background-color:white;">
+                                                <td>
+                                                    <strong>رقم هاتف العميل</strong>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="docs.partner_id.phone"/>                                  
+                                              </td>
+                                                <td>
+                                                   <strong> رقم جوال العميل </strong>
+                                                </td>
+                                                <td>
+                                                   <span t-esc="docs.partner_mobile1"/>
+                                                </td>
+                                                
+                                               
+                                            </tr>
+                                            </table>
+                                       </td>
+                                         
+                                    </tr>
+                                </table>
+                                <table>
+                                    <br/>    <br/>
+                                    وافق الطرفان على إقامة 
+                                    <strong> - <span t-esc="docs.service_id.name"/> - </strong>  
+                                   في القاعات التالية :  
+                                   <strong> ( <span t-esc="', '.join(g['name'] for g in docs.lines.product_id)"/> ) </strong> 
+                                    وذلك يوم 
+                                    <t t-if="docs.order_from_higri_date == docs.order_to_higri_date">
+                                        <strong> <span t-esc="docs.booking_day"/>  - <span t-esc="docs.order_from_higri_date"/>   </strong>
+                                    </t>
+                                      <t t-if="docs.order_from_higri_date != docs.order_to_higri_date">
+                                        <strong> <span t-esc="docs.booking_day"/>  - <span t-esc="docs.order_from_higri_date"/> - <span t-esc="docs.order_to_higri_date"/> </strong>
+                                    </t>
+                                     
+                                    الموافق 
+                                    <t t-if="docs.booking_start_date == docs.booking_end_date">
+                                          <strong>  <span t-esc="docs.booking_start_date"/> </strong>
+                                    </t>
+                                    <t t-if="docs.booking_start_date != docs.booking_end_date">
+                                        <strong>  <span t-esc="docs.booking_start_date"/> - <span t-esc="docs.booking_end_date"/></strong>
+                                    </t>
+
+                                    بمبلغ اجمالي قدره 
+                                      <strong>  <span t-esc="docs.changeamount2words(docs.service_after_discount_with_tax)"/></strong>
+                                    كتابة  
+                                      <strong>  <span t-esc="docs.service_after_discount_with_tax" t-options="{'widget': 'monetary', 'display_currency': env.company.currency_id}"/></strong>
+                                    <t t-if="docs.advance_amount">
+                                        وقد تم دفع دفعة مقدمة قدرها 
+
+                                        <strong>  <span t-esc="sum(l.payment_amount for l in docs.lines_payment.filtered(lambda x: x.state == 'posted'))" t-options="{'widget': 'monetary', 'display_currency': env.company.currency_id}"/></strong>
+                                        
+                                        والمتبقي
+                                   
+                                        <strong>  <span t-esc="docs.remaining_amount" t-options="{'widget': 'monetary', 'display_currency': env.company.currency_id}"/></strong>
+
+                                    </t>
+                                    </table>
+
+                                    <br/>   
+                                    <strong><center>تفاصيل الحجز</center></strong>
+                                    <br/> 
+                                    <table id="table1" style="font-size:11px;">
+                                        <tr>
+                                            <td style="vertical-align:top;font-size:11px; border-collapse: collapse;">
+                                                <table id="table1" class="table table-sm table table-bordered" style="background-color:white;">
+                                                <tr style="background-color:white;">
+                                                
+                                                    <td style="vertical-align:top;font-size:11px; border-collapse: collapse;">
+                                                        <strong>نوع الحفل  </strong>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="docs.service_id.name"/>
+                                                    </td>
+                                                    <td>
+                                                        <strong> عدد الخدمات</strong>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="len(docs.lines)"/>  
+                                                        
+                                                    </td>
+                                                    
+                                                   
+                                                </tr>
+                                                <tr style="background-color:white;">
+                                                    <td>
+                                                    <strong> عدد الحضور </strong> 
+                                                    </td>
+                                                     
+                                                    <td>
+                                                        <span t-esc="sum(l.person_count for l in docs.lines)"/>  
+                                                    </td>
+                                                    
+                                                    <td>
+                                                    <strong> اسم القاعات </strong>
+                                                    </td>
+                                                    
+                                                    <td>
+                                                        <span t-esc="', '.join(g['name'] for g in docs.lines.product_id)"/>
+                                                    </td>
+                                                     
+                                                   
+                                                </tr>
+                                                <tr style="background-color:white;">
+                                                    <td>
+                                                        <strong>السعر قبل التخفيض والقيمة المضافة</strong>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="docs.dept_base_amount" t-options="{'widget': 'monetary', 'display_currency': env.company.currency_id}"/>                                             
+                                                      </td>
+                                                    <td>
+                                                       <strong> قيمة التخفيض </strong>
+                                                    </td>
+                                                    <td>
+                                                       <span t-esc="docs.dept_discount_total" t-options="{'widget': 'monetary', 'display_currency': env.company.currency_id}"/>
+                                                    </td>
+                                                    
+                                                   
+                                                </tr>
+                                                <tr style="background-color:white;">
+                                                    <td>
+                                                        <strong>السعر الاجمالي بعد التخفيض شامل الضريبة</strong>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="docs.dept_after_discount_with_tax" t-options="{'widget': 'monetary', 'display_currency': env.company.currency_id}"/>      
+                                                    </td>
+
+                                                    <td>
+                                                        <strong>مبلغ الضريبة VAT</strong>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="docs.dept_price_after_discount * (15/100)" t-options="{'widget': 'monetary', 'display_currency': env.company.currency_id}"/>      
+                                                    </td>
+
+                                                </tr>
+                                                </table>
+                                           </td>
+                                             
+                                        </tr>
+                                    </table>
+
+							 
+ 
+                                <t t-if="docs.service_lines">
+                                    <thead>
+                                        <strong> خدمات القاعات </strong>
+                                        <t t-set="total_services" t-value="0"/>
+                                        <table id="table1" class="table table-sm table table-bordered" style="background-color:white;">
+                                            <thread>
+                                            <th class="text-center" style="width: 20%">الوصف</th>
+                                            <th class="text-center" style="width: 10%">الكمية</th>
+                                            <!-- 									<th class="text-center" style="width: 10%">اجمالي المقاسات</th>-->
+                                            <th class="text-center" style="width: 10%">السعر </th>
+                                            <th class="text-center" style="width: 10%">الاجمالي </th>
+                                            
+                                            <th class="text-center" style="width: 10%">الخصم </th>
+                                            <th class="text-center" style="width: 10%">الاجمالي بعد الخصم شامل الضريبة</th>
+                                            </thread>
+                                            <tbody>
+                                            <t t-foreach="docs.service_lines" t-as="line">
+                                                <tr>
+                                                    <td><span t-esc="line.name"/></td>
+                                                    <td><span t-esc="line.qty"/></td>
+                                                    <td><span t-esc="line.price" t-options="{'widget': 'monetary', 'display_currency': env.company.currency_id}"/></td>
+                                                    <td><span t-esc="line.total" t-options="{'widget': 'monetary', 'display_currency': env.company.currency_id}"/></td>
+                                                    <td><span t-esc="line.discount_total" t-options="{'widget': 'monetary', 'display_currency': env.company.currency_id}"/></td>
+                                                    <td><span t-esc="round(line.price_after_discount_with_tax,2)" t-options="{'widget': 'monetary', 'display_currency': env.company.currency_id}"/></td>
+                                                    <t t-set="total_services" t-value="total_services + line.price_after_discount_with_tax"/>
+                                                </tr>
+                                            </t>
+                                            </tbody>
+                                            <tr>
+                                                <td colspan="5"> اجمالي الحدمات </td>  
+                                                <td><span t-esc="round(total_services,2)" t-options="{'widget': 'monetary', 'display_currency': env.company.currency_id}"/></td>
+                                            </tr>
+                                        </table>
+
+                                    </thead>
+                           
+                           
+                                </t>
+                             
+                              
+                            <t t-else="">
+                                <br/>
+                                
+                                
+                            </t>
+                           	<div>
+                            <!--<img src="docs.wo_car_image"
+                                    style="display: block;
+                                    margin-left: auto;
+                                    margin-right: auto;
+                                    width: 70%;"
+                                    />-->
+                                <!-- <center>
+                                    <img t-if="docs.wo_car_image" t-att-src="'data:image/png;base64,%s' % to_text(docs.wo_car_image)" style="max-height: 250px;"/>
+                                </center> -->
+                            </div>
+
+	                         <div>
+                                <br/>
+ 	                         <strong>
+                            	<center>  
+                            	<p> 
+                            	    <!-- <span style="font-size:10px;">								
+                                        <t t-esc="docs.wo_notes" />
+                                    </span> -->
+                            	</p>
+                            	</center>
+                             </strong>
+                                  <p style="page-break-after:always;">
+                           </p>
+                           <br/>
+                             <p style=""> 
+                              
+                                    <center> الأحكام والشروط</center>
+                                     <br/>
+                               
+                                  <ol style="list-style-type: decimal; font-size:13px;list-style-position: inside;">
+                                        <li>
+                                            يتعهد الطرف الثاني (المستأجر) بالمحافظة على القصر محل العقد، وهو مسؤول عن أي أضرار تحدث للقصر اثناء مدة العقد وعليه أن يقوم بتسليمه للمالك بعد انتهاء الفترة المحددة بهذا العقد بكامل محتوياته وفي حالة سليمة
+                                        </li>
+                                        <li>
+                                            يتعهد الطرف الثاني ألا يغير شيئا في القصر (بإزالة أو استحداث) الا بإذن خطي من الطرف الاول (المالك) ويشمل ذلك أعمال الديكور والاضاءة والاثاث والتجهيزات الكهربائية وغير ذلك من البنية الاساسية للقصر
+                                        </li>
+                                        <li>
+                                             عدد الحضور والقيمة الاجمالية لهذا العقد ملزمة للطرفين غير قابلة للنقصان وقابلة للزيادة، بإذن خطي من الطرف الاول بمدة الا تقل عن ثلاث أيام من موعد الحفل
+                                        </li>
+                                        <li>
+                                             الا يحق للطرف الثاني أن يؤجر العقار على غيرة الا بإذن خطي من الطرف الاول
+                                        </li>
+                                        <li>
+                                             حفاظا على سلامة المدعوين فإنه الا يسمح بإدخال أي ألعاب نارية أو شموع أو أسلحة أو مواد قابلة الاشتعال أو أي مواد خطرة أو حيوانات أو طيور إلى داخل القاعة أو مرافقها
+                                        </li>
+                                        <li>
+                                            يتعهد الطرف الثاني بالقيام بالمذكور أدناه ويكون مسؤولا أمام الجهات الرسمية بالمحافظة على القوانين والانظمة السارية في المملكة العربية السعودية في الفترة المحددة للايجار
+                                        </li>
+                                        <li>
+                                            علم الطرف الثاني أنه ليس من حقه إلغاء هذا العقد بعد التوقيع عليه، تحت اي ظرف من الظروف والا يحق له المطالبة بأي مبلغ مما دفع تماما
+                                        </li>
+                                        <li>
+                                            يحق لطرف الثاني تأجيل الحفل فقط في حال الوفاة (لا سمح الله) من الدرجة الاولى حصرا مع تقديم ما يثبت ذلك ويتم تأجيل موعد الحجز على حسب الامكانية المتاحة للحجوزات والا يحق له الالغاء واسترجاع المبالغ المدفوعة
+                                        </li>
+                                        <li>
+                                            يلتزم الطرف الثاني بعدم التصوير الفوتوغرافي والفيديو في صالة النساءالا لمن لديه رخصة نظامية من الطرف الثاني مسئول مسؤولية كاملة امام الجهات المختصة ويمنع الاختلاط 
+                                        </li>
+                                        <li>
+                                            في حال تم الاتفاق على توفير البوفيه من قبل الطرف الاول فإنه إذا لزم الامر يحق للطرف الاول التعديل أو تغيير بعض أصناف قائمة الطعام المتفق عليها في العقد في حالة صعوبة او ندرة بعض المواد الغذائية في الأسواق
+                                        </li>
+                                        <!-- <li>
+                                            إدارة القصر تمنع منعا باتا تسليم مبالغ نقدية لي موظف بدون استلام سندات رسمة والادارة غير مسؤولة في حال مخالفة ذلك
+                                        </li> -->
+                                        <li>
+                                            يمنع دخول الاطفال منعا باتا باستثناء أقارب أصحاب الحفل من الدرجة الاولى بحد عشرة أطفال فقط لاغير
+                                        </li>
+                                        <li>
+                                            يفتح القصر في يوم المناسبة للطرف الثاني الساعة 5:00 مساء الى الساعة 3:00 صباحا بعد منتصف الليل ولايسمح بغير ذلك، ويلتزم بالخروج تمام 
+                                        </li>
+                                        <li>
+                                            بمجرد انتهاء الحفل والخروج من القصر دون التقدم بشكوى إن وجدت يعتبر ذلك مخالصة كاملة الادارة القصر بأداء الخدمة المطلوبة منها بشكل كامل
+                                        </li>
+                                        <li>
+                                            يلتزم الطرف الثاني بالطليات المذكوره ادناه عن طريق القاعة وعلى حسابه وهي كاالتي :
+                                            
+                                                <ul style=" font-size:13px;list-style-position: inside; margin: 4px;">
+                                                    <li>  البوفية-حلويات سمر   </li>
+                                                    <li>  الطبخ-مطبخ القاعة    </li>
+                                                    <li>  صحون الحلى على الطاولات وصحون التقديمات  </li>
+                                                     <li>  الكوشة وتزين الطاولات </li>
+                                                    <li>  تزين المدخل    </li>
+                                                    <li>  الورد الطبيعي  </li>
+                                                </ul>
+                                           
+                                        </li>
+                                        <li>
+                                            يلتزم الطرف الثاني بإكمال جميع تفاصيل الحجز وإكمال المبالغ المستحقه في موعد اقصاه اسبوع من تاريخ الحجز علما ان القاعة لا تفتح الا بعد سداد كامل الإيجار  ملا حظه هامه: علي المستاجر لوازم االكل )سفر،مناديل،صحون بالستك،الخ(وايضا مفتشه الجوالات
+                                        </li>
+                                         <li>
+                                            يمنع منعا باتا المزمار والالعاب النارية
+                                        </li>
+                                         <li>
+                                             يمنع منعا باتا استخدام المكبرات  خارج المبنى اطلاقا وتستخدم في الداخل بالصالة  لاغراض السلامة
+                                        </li>
+                                        <li>
+                                            هذا القعد لعريس واحد فقط
+                                        </li>
+                                           
+                                    </ol>
+                               
+                            </p>
+
+                             <table class="table">
+                                <tr>
+                                    <td>
+                                        <strong> الطرف الاول </strong>  
+                                    </td>
+                                    <td>
+                                        <span t-esc="docs.company_id.name"/>
+                                    </td>
+                                    
+                                   
+                                    
+                                    <td>
+                                        <strong> الطرف الثاني  </strong> 
+                                    </td>
+                                    <td>
+                                        <span t-esc="docs.partner_id.name"/>             
+                                    </td>
+                                    
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>التوقيع</strong>  
+                                    </td>
+                                    <td>
+                                            --------------------------------
+                                    </td>
+                                    
+                                   
+                                    
+                                    <td>
+                                        <strong> التوقيع </strong>  
+                                    </td>
+                                    <td>
+                                            --------------------------------
+                                    </td>
+                                    
+                                </tr>
+                            </table>
+                            </div>
+                            
+
+                            <p style="page-break-after:always;">
+                            </p>
+                             <p> 
+                                <center>
+                                    
+                                </center>
+                            </p>
+
+	                          
+                            	
+            			
+                           <!--********************************************************-->
+                            <!--							<div class="row justify-content-end">-->
+ 
+                    	</t>
+					</div>
+					</t>
+				</t>
+				</t>
+</template>
+
+
+<report id="print_booking_order_report"
+				model="hotel.master"
+				string=" طباعة عقد الحجز"
+				report_type="qweb-pdf"
+				name="qimamhd_booking_13.booking_order_report_view"
+				file="qimamhd_booking_13.booking_order_report_view"
+				menu="True"
+
+				/>
+</odoo>

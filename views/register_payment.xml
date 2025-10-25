@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+         <record id="booking_register_payment_view" model="ir.ui.view">
+                <field name="name">booking_register_payment_view</field>
+                <field name="model">account.payment</field>
+                <field name="inherit_id" ref="account.view_account_payment_form" />
+                <field name="arch" type="xml">
+                    <xpath expr="//field[@name='journal_id']" position="after">
+                        <field name="booking_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
+                    </xpath>
+                </field>
+	    </record>
+<!--        ======================================================================-->
+        <record id="booking_payment_view" model="ir.ui.view">
+            <field name="name">booking.payment.view</field>
+            <field name="model">booking.register.payment</field>
+            <field name="arch" type="xml">
+                <form sring="بيانات الدفع" >
+                    <header>
+                          <button name="create_payment" string="اعتماد" type="object" class="oe_highlight"
+                                    attrs="{'invisible':[('state','in',['posted','cancel'])]}"
+                                     confirm="تاكيد .. هل انت متاكد من عملية الدفع وترحيلها للحسابات"
+                                    />
+                         <button name="cancel_payment_btn" string="الغاء الدفع" type="object" class="oe_highlight"
+                                    groups="qimamhd_booking_13.group_cancel_register_payment"
+                                    attrs="{'invisible':[('state','in',['cancel'])]}"
+                                     confirm="تاكيد .. هل انت متاكد من الغاء الدفع "
+                                    />
+                    </header>
+                     <sheet>
+                           <div class="oe_button_box" name="button_box">
+                               <button type="object"
+                                    name="call_payments"
+                                    class="oe_stat_button"
+                                    string="دفعات الحجز"
+                                    groups="qimamhd_booking_13.group_register_payment"
+                                    icon="fa-history" >
+
+<!--                                <field name="payment_count"  widget="statinfo"/>-->
+                                </button>
+
+
+                         </div>
+                            <group>
+                                <group>
+                                     <field name="id" readonly="1" string="رقم الدفع" />
+                                    <field name="pay_date" string="تاريخ الدفع" attrs="{'readonly': [('state','=','posted')]}"/>
+                                     <field name="journal_id" string="طريقة الدفع"   attrs="{'readonly': [('state','=','posted')]}" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
+
+                                     <field name="payment_amount"  attrs="{'readonly': [('state','=','posted')]}" required="1" string="المبلغ المدفرع" />
+                                         <field name="payment_note"  attrs="{'readonly': [('state','=','posted')]}" string="البيانات"/>
+                                         <field name="branch_id" readonly="1" string="الفرع"  options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,'no_create': True}"/>
+
+                                </group>
+                                   <group>
+                                       <field name="state" readonly="1" string="الحالة"/>
+                                         <field name="invoice_amount" string="مبلغ الفاتورة"/>
+                                     <field name="advanced_amount" string="المبلغ المدفوع تراكمي" />
+                                     <field name="remaining_amount" string="المتبقي" />
+                                     <field name="header_id" string=" رقم الحجز" readonly="1" />
+
+                                   </group>
+                            </group>
+                     </sheet>
+
+                   </form>
+
+
+            </field>
+        </record>
+
+
+        <record id="booking_payment_view_tree_view" model="ir.ui.view">
+            <field name="name">تسجيل دفعة نقدية</field>
+            <field name="model">booking.register.payment</field>
+            <field name="arch" type="xml">
+                <tree string="booking Products History Tree" >
+                     <field name="id" readonly="1" string="رقم الدفع" />
+                    <field name="pay_date" string="تاريخ الدفع"/>
+                     <field name="payment_amount" string="المبلغ المدفرع" />
+<!--                     <field name="invoice_amount" string="مبلغ الفاتورة"/>-->
+<!--                     <field name="advanced_amount" string="المبلغ المقدم" />-->
+<!--                     <field name="remaining_amount" string="الملاحظات" />-->
+                     <field name="header_id" invisible="1"/>
+                       <field name="payment_note" string="البيانات"/>
+                       <field name="state" string="الحالة"/>
+
+                </tree>
+            </field>
+        </record>
+<!--        search-->
+        <record id="booking_payment_search_view" model="ir.ui.view">
+        <field name="name">البحث في </field>
+        <field name="model">booking.register.payment</field>
+        <field name="arch" type="xml">
+             <search string=" البحث في ">
+                    <field name="id" readonly="1" string="رقم الدفع" />
+                    <field name="pay_date" string="تاريخ الدفع"/>
+                     <field name="payment_amount" string="المبلغ المدفرع" />
+                     <field name="invoice_amount" string="مبلغ الفاتورة"/>
+                     <field name="advanced_amount" string="المبلغ المقدم" />
+                     <field name="remaining_amount" string="الملاحظات" />
+                     <field name="header_id" invisible="1"/>
+                       <field name="payment_note" string="البيانات"/>
+
+
+                </search>
+            </field>
+        </record>
+
+        <record id="action_booking_payment_view" model="ir.actions.act_window">
+            <field name="name">تسجيل دفعة</field>
+            <field name="res_model">booking.register.payment</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="booking_payment_view_tree_view"/>
+
+             <field name="target">current</field>
+
+
+        </record>
+
+    </data>
+
+</odoo>
