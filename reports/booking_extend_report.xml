@@ -1,140 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-		<template id="booking_extend_baasher_report_view"  inherit_id="qimamhd_booking_13.booking_extend_report_view">  
-		    <t t-if="o and 'company_id' in o">
-                <t t-set="company" t-value="o.company_id"></t>
-            </t>
-            <t t-if="not o or not 'company_id' in o">
-                <t t-set="company" t-value="res_company"></t>
-            </t>
-            
-			<div class="header">
-                <div class="row mt32 mb32">
-                    <div class="col-6">
-						<t t-if="not user_id.branch_id.no_header_report_account">
-							<t t-if="user_id.branch_id.branch_header">
-								<img t-if="user_id.branch_id" t-att-src="'data:image/png;base64,%s' % to_text(user_id.branch_id.branch_header)"
-									style="max-height: 200px;"/>
-							</t>
-							<t t-else="">
-								<t t-if="company.header_image">
-									<img t-if="company.header_image" t-att-src="'data:image/png;base64,%s' % to_text(company.header_image)"
-										style="max-height: 200px;"/>
-								</t>
-						    </t>
-						</t>
-                    </div>
-                </div>
-            </div>
-            <div class="footer">
-                <div class="row mt32 mb32">
-                    <div class="col-12">
-						<t t-if="not user_id.branch_id.no_header_report_account">
-							<t t-if="user_id.branch_id.branch_footer">
- 								<img t-if="user_id.branch_id" t-att-src="'data:image/png;base64,%s' % to_text(user_id.branch_id.branch_footer)"
-									style="max-height: 200px;"/> 
-									<!--<img src="/sale/static/img/lumar_cond.png" style="max-height:200px;"/>-->
-									<br />
-							</t>
-							<t t-else="">
-								<t t-if="company.footer_image">
-									<img t-if="company.footer_image" t-att-src="'data:image/png;base64,%s' % to_text(company.footer_image)"
-										style="max-height: 200px;"/> 
-										<!--<img src="/sale/static/img/lumar_cond.png" style="max-height:200px;"/>-->
-										<br />
-								</t>
-							</t>
-						</t>
-                    </div>
-                </div>
-            </div>
-            
-			<t t-call ="web.html_container">
-			    
+    <template id="booking_extend_baasher_report_view"  inherit_id="qimamhd_booking_13.booking_extend_report_view">  
+         <xpath expr="//t[@t-call='web.html_container']" position="replace">
+			<t t-call="web.html_container">
 				<t t-call="web.external_layout">
-				
-<style>
-        table {
-          border-collapse: collapse;
-          width: 100%;
-           font-size:9px;
-        }
-        #t01 th, td {
-          text-align: right;
-          padding: 3px;
-          font-size:9px;
-          vertical-align: middle;
-        }
-</style>
-<style>
-#customers {
-  border-collapse: collapse;
-  width: 100%;
-   border: 1px solid DarkOrange;
-  
-  overflow:hidden
-}
+                                        
+                        <style>
+                                table {
+                                border-collapse: collapse;
+                                width: 100%;
+                                font-size:9px;
+                                }
+                                #t01 th, td {
+                                text-align: right;
+                                padding: 3px;
+                                font-size:9px;
+                                vertical-align: middle;
+                                }
+                        </style>
+                        <style>
+                        #customers {
+                        border-collapse: collapse;
+                        width: 100%;
+                        border: 1px solid DarkOrange;
+                        
+                        overflow:hidden
+                        }
 
-#supplier {
-  border-collapse: collapse;
-  width: 100%;
-   border: 1px solid DarkOrange;
-  
-  overflow:hidden
-}
+                        #supplier {
+                        border-collapse: collapse;
+                        width: 100%;
+                        border: 1px solid DarkOrange;
+                        
+                        overflow:hidden
+                        }
 
-#customers td, #customers th {
-  border: 1px solid gray;
-  padding: 5px;
-  text-align: right;
-}
+                        #customers td, #customers th {
+                        border: 1px solid gray;
+                        padding: 5px;
+                        text-align: right;
+                        }
 
-#supplier td, #supplier th {
-  border: 1px solid #D3D3D3;
-  padding: 8px;
-  text-align: right;
-  vertical-align: top;
-}
+                        #supplier td, #supplier th {
+                        border: 1px solid #D3D3D3;
+                        padding: 8px;
+                        text-align: right;
+                        vertical-align: top;
+                        }
 
-#customers tr:nth-child(even){background-color: #F5F5F5;}
+                        #customers tr:nth-child(even){background-color: #F5F5F5;}
 
-#customers tr:hover {background-color: #ddd;}
+                        #customers tr:hover {background-color: #ddd;}
 
-#customers th {
-  padding-top: 5px;
-  padding-bottom: 5px;
-  text-align: right;
-  
-  
-}
+                        #customers th {
+                        padding-top: 5px;
+                        padding-bottom: 5px;
+                        text-align: right;
+                        
+                        
+                        }
 
-#supplier th {
-  padding-top: 5px;
-  padding-bottom: 5px;
-  text-align: right;
-  
-}
-</style>
-<style>
-#table1 {
-  border-collapse: collapse;
-  width: 100%;
-  font-size:9px;
-}
+                        #supplier th {
+                        padding-top: 5px;
+                        padding-bottom: 5px;
+                        text-align: right;
+                        
+                        }
+                        </style>
+                        <style>
+                        #table1 {
+                        border-collapse: collapse;
+                        width: 100%;
+                        font-size:9px;
+                        }
 
-#table1 th, #table1 td {
-  padding: 8px;
-  text-align: right;
-  font-size:9px;
-}
-</style>
-<style>
-  #foo {
-position:absolute;
-bottom:300px;
-right:0px;
-  }
-</style>
+                        #table1 th, #table1 td {
+                        padding: 8px;
+                        text-align: right;
+                        font-size:9px;
+                        }
+                        </style>
+                        <style>
+                        #foo {
+                        position:absolute;
+                        bottom:300px;
+                        right:0px;
+                        }
+                        </style>
 
 					<t t-foreach ="docs" t-as="doc">
 						<div class="page">
@@ -387,6 +339,8 @@ right:0px;
 					</t>
 				</t>
 				</t>
+              
+        </xpath>
 	</template>
 
  
