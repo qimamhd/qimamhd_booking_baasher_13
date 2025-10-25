@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-		<template id="booking_extend_report_view">
+		<template id="booking_extend_baasher_report_view"  inherit_id="qimamhd_booking_13.booking_extend_report_view">  
 		    <t t-if="o and 'company_id' in o">
                 <t t-set="company" t-value="o.company_id"></t>
             </t>
@@ -162,7 +162,7 @@ right:0px;
                                    </t> -->
                                 </center>
                                    <br></br>    <br></br>
-								 تم الحاق خدمات للقاعة للعقد رقم ( <span t-esc="docs.extend_header_id.id"/> )  بين :
+								 تم الحاق خدمات للقاعة للعقد رقم ( <span t-esc="docs.extend_header_id.seq"/> )  بين :
                                 <br></br>    <br></br>
                                 <table   style="font-size:11px;">
                                     <tr>

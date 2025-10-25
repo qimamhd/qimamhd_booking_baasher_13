@@ -1,69 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 	<data>
-        <record model="ir.module.category" id="wo_category_priv">
-            <field name="name">صلاحيات متخصصة في نظام الحجوزات</field>
-            <field name="sequence">110</field>
-           </record>
-        <record id="group_over_discount_mgr_priv" model="res.groups">
-          <field name="name">منح صلاحيات تجاوز الخصم في نظام الحجوزات</field>
-                  <field name="category_id" ref="wo_category_priv"/>
-
-        </record>
-        <record id="group_register_payment" model="res.groups">
-          <field name="name">منح صلاحية تسجيل دفعات مقدمة</field>
-                 <field name="category_id" ref="wo_category_priv"/>
-    
-        </record>
-
-        <record id="group_cancel_register_payment" model="res.groups">
-          <field name="name">منح صلاحية الغاء الدفعات في الحجز</field>
-                 <field name="category_id" ref="wo_category_priv"/>
-    
-        </record>
-
-
-        <record id="group_allow_cancel_wo" model="res.groups">
-          <field name="name">منح صلاحية الغاء او حذف الحجوزات</field>
-                 <field name="category_id" ref="wo_category_priv"/>
-    
-        </record>
-
-         <record id="group_not_allow_ending_booking" model="res.groups">
-          <field name="name">منع الوصول للحجوزات المنتهية</field>
-                 <field name="category_id" ref="wo_category_priv"/>
-    
-        </record>
-       <record id="group_create_invoice_booking" model="res.groups">
-          <field name="name">منح صلاحية انشاء فاتورة</field>
-                 <field name="category_id" ref="wo_category_priv"/>
-    
-        </record>
-         <record id="hotel_master_branch_rules" model="ir.rule">
-            <field name="name">hotel master Branch</field>
-            <field name="model_id" ref="model_hotel_master"/>
-            <field name="global" eval="True"/>
-             <field name="domain_force">['|',('branch_id','!=',int(user.is_admin)), ('branch_id', 'in',
-                    user.allowed_branch_ids.ids)]</field>
-             <field name="perm_read" eval="True" />
-            <field name="perm_write" eval="True" />
-            <field name="perm_create" eval="True" />
-            <field name="perm_unlink" eval="True" />
-          </record>
-
-
-
-        <record id="booking_not_ending_booking_rules" model="ir.rule">
-          <field name="name">booking_not_ending_booking_rules</field>
-          <field name="model_id" ref="model_hotel_master" />
-          <field name="groups" eval="[(4, ref('group_not_allow_ending_booking'))]" />
-          <field name="domain_force">[('state','in',['initial_booking','booking_done'])]</field>
-          <field name="perm_read" eval="True" />
-          <field name="perm_write" eval="True" />
-          <field name="perm_create" eval="True" />
-          <field name="perm_unlink" eval="True" />
-        </record>
-
+      
 
 
     </data>

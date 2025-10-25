@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-<template id="booking_payment_report_view">
+<template id="booking_payment_report_baashher_view" inherit_id="qimamhd_booking_13.booking_payment_report_view">  
 		    <t t-if="o and 'company_id' in o">
                 <t t-set="company" t-value="o.company_id"/>
             </t>
@@ -148,7 +148,7 @@
                              
                                       <table class="table1">
                                       <tr>
-                                           <td style="font-size:13px;padding :0px 20px;"> <strong>رقم السند :</strong> <span t-esc="docs.id"/>     <br/> <strong> رقم العقد:</strong> <span t-esc="docs.header_id.id"/>  </td>
+                                           <td style="font-size:13px;padding :0px 20px;"> <strong>رقم السند :</strong> <span t-esc="docs.id"/>     <br/> <strong> رقم العقد:</strong> <span t-esc="docs.header_id.seq"/>  </td>
                                             <td style="font-size:13px;padding :0px 190px 0px 10px;"><strong  style="font-size:13px;padding :0px 25px 0px 10px;">  سند قبض   </strong> <br/> Receipt Voucher</td> 
                                             <td style="font-size:13px;padding : 0px 190px 0px 0px;"><strong> تاريخ الدفع : </strong>  <span t-esc="docs.pay_date"/>   </td>
                                      </tr>
@@ -332,14 +332,5 @@
 				</t>
 				</t>
 </template>
-
-<report id="print_booking_payment_report"
-				model="booking.register.payment"
-				string=" طباعة سند القبض"
-				report_type="qweb-pdf"
-				name="qimamhd_booking_13.booking_payment_report_view"
-				file="qimamhd_booking_13.booking_payment_report_view"
-				menu="True"
-
-				/>
+ 
 </odoo>

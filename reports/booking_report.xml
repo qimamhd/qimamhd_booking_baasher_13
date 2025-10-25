@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-<template id="booking_order_report_view">
+<template id="booking_order_baasher_report_view"  inherit_id="qimamhd_booking_13.booking_order_report_view">  
 		    <t t-if="o and 'company_id' in o">
                 <t t-set="company" t-value="o.company_id"/>
             </t>
@@ -141,7 +141,7 @@
 						    
 								<center><strong> عقد الحجز</strong>
                                     <br/>
-                                    <strong> رقم العقد </strong> (  <span t-esc="docs.id"/>  )
+                                    <strong> رقم العقد </strong> (  <span t-esc="docs.seq"/>  )
                                     <!-- <t t-if="docs.state == 'initial_booking'">
                                         حجز مبدئ
                                    </t>

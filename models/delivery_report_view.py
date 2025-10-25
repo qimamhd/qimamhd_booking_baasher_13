@@ -5,44 +5,7 @@ from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT as DATETIME_FORMAT
 
 
 class product_label_report(models.TransientModel):
-    _name = 'booking.delivery.report.view'
-
-    customer_id = fields.Many2one('res.partner')
-    booking_id = fields.Many2one('hotel.master')
-    booking_no = fields.Integer()
-
-    date_order = fields.Date()
-
-    company_ids1 = fields.Many2one('res.company', string="Company", required=True,
-                                   default=lambda self: self.env.company)
-    lines = fields.One2many('booking.delivery.view.line', 'header_id')
-
-
-
-    @api.onchange('company_ids1')
-    def get_called_data(self):
-        active_ids = self._context.get('active_ids', [])
-        # mk_line = self.env['make.products.lines'].search([('id','=', self.line_product )])
-
-
-
-        self.booking_id = self.env['hotel.master'].search([('id', '=', active_ids)])
-        self.booking_no = self.booking_id.id
-        self.write({'customer_id': self.booking_id.partner_id.id})
-        self.write({'date_order': self.booking_id.order_date})
-
-
-        print("mk_product", self.booking_id)
-
-        for line in self.booking_id.lines:
-            self.env['booking.delivery.view.line'].create({
-                'product': line.product_id.name,
-                'qty': line.person_count - line.delivered_qty,
-                'header_id': self.id,
-                'booking_line_id': line.id,
-            })
-
-
+    _inherit = 'booking.delivery.report.view'
 
     def get_report(self):
         """Call when button 'Get Report' clicked.
@@ -62,7 +25,7 @@ class product_label_report(models.TransientModel):
                line_ids.append(l.id)
                l.booking_line_id.write({'delivered_qty': l.qty + l.booking_line_id.delivered_qty})
                
-        print("line1_ids",line_ids)
+      
 
         data = {
             'ids': self.ids,
@@ -121,7 +84,7 @@ class ReportAttendanceRecap(models.AbstractModel):
             'customer': l_customer,
             'date_order': l_date_order,
             'lines': result,
-            'booking': booking_ids.id,
+            'booking': booking_ids.seq,
             'id': l_id,
             'print_date': l_print_date,
 
